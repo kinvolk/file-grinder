@@ -1,28 +1,27 @@
 package main
 
-import(
+import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	
+	"log"
 )
 
 func check(e error) {
-    if e != nil {
-        panic(e)
-    }
+	if e != nil {
+		log.Fatal(e)
+	}
 }
-
 
 func readafile (path string) string{
 	dat, err := ioutil.ReadFile(path)
     	check(err)
-    	return string(dat)
+	return string(dat)
 }
 
-func main (){
-	pathtofile := flag.String("p","","please declare the path of your file.")
+func main() {
+	pathtofile := flag.String("path", "", "please declare the path of your file.")
 	flag.Parse()
 	data := readafile(*pathtofile)
-	fmt.Println(string(data))	
+	fmt.Println(string(data))
 }
