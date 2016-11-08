@@ -3,8 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"log"
+	"bufio"
 )
 
 func check(e error) {
@@ -14,9 +15,15 @@ func check(e error) {
 }
 
 func readafile (path string) string{
-	dat, err := ioutil.ReadFile(path)
-    	check(err)
-	return string(dat)
+	file, err := os.Open(path)
+	check(err)
+	str:=""
+	scanner := bufio.NewScanner(file)
+    	for scanner.Scan() {
+        	str+=scanner.Text()
+    	}
+	file.Close()
+	return string(str)
 }
 
 func main() {
