@@ -1,11 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
-	"os"
 	"log"
-	"bufio"
+	"os"
 )
 
 func check(e error) {
@@ -14,14 +14,14 @@ func check(e error) {
 	}
 }
 
-func readafile (path string) string{
+func readafile(path string) string {
 	file, err := os.Open(path)
 	check(err)
-	str:=""
+	str := ""
 	scanner := bufio.NewScanner(file)
-    	for scanner.Scan() {
-        	str+=scanner.Text()
-    	}
+	for scanner.Scan() {
+		str += scanner.Text()
+	}
 	file.Close()
 	return string(str)
 }
