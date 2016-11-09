@@ -10,11 +10,11 @@ import (
 )
 
 func main() {
-	pathtofile := flag.String("path", "", "please declare the path of your file.")
-	linenumbers := flag.Bool("show-line-numbers", false, "Show the linenumbers")
+	pathToFile := flag.String("path", "", "please declare the path of your file.")
+	lineNumbers := flag.Bool("show-line-numbers", false, "Show the linenumbers")
 	flag.Parse()
-	data := readafile(*pathtofile)
-	if *linenumbers {
+	data := readafile(*pathToFile)
+	if *lineNumbers {
 		printWithLineNumbers(data)
 	} else {
 		printPlainText(data)
