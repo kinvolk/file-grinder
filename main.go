@@ -9,6 +9,18 @@ import (
 	"strconv"
 )
 
+func main() {
+	pathtofile := flag.String("path", "", "please declare the path of your file.")
+	linenumbers := flag.Bool("show-line-numbers", false, "Show the linenumbers")
+	flag.Parse()
+	data := readafile(*pathtofile)
+	if *linenumbers {
+		printWithLineNumbers(data)
+	} else {
+		printPlainText(data)
+	}
+}
+
 func check(e error) {
 	if e != nil {
 		log.Fatal(e)
@@ -27,20 +39,13 @@ func readafile(path string) []string {
 	return str
 }
 
-func main() {
-	pathtofile := flag.String("path", "", "please declare the path of your file.")
-	linenumbers := flag.Bool("show-line-numbers", false, "Show the linenumbers")
-	flag.Parse()
-	data := readafile(*pathtofile)
-	print(data, *linenumbers)
-}
-
-func print(data []string, numb bool) {
+func printWithLineNumbers(data []string) {
 	for s := range data {
-		if numb {
-			fmt.Println(strconv.Itoa(s+1) + ") " + data[s])
-		} else {
-			fmt.Println(data[s])
-		}
+		fmt.Println(strconv.Itoa(s+1) + ") " + data[s])
+	}
+}
+func printPlainText(data []string) {
+	for s := range data {
+		fmt.Println(data[s])
 	}
 }
