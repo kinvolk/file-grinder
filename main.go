@@ -10,15 +10,26 @@ import (
 )
 
 func main() {
-	pathToFile := flag.String("path", "", "please declare the path of your file.")
+	pathToFile := flag.String("path", "", "Declare the path of your file.")
 	lineNumbers := flag.Bool("show-line-numbers", false, "Show the linenumbers")
+	odd := flag.Bool("odd", false, "Show odd lines only")
+	even := flag.Bool("even", false, "Show even lines only")
 	flag.Parse()
-	data := readafile(*pathToFile)
+
+	data := readaFile(*pathToFile)
+	if *odd != *even {
+		data = onlyShow(data, *odd)
+	}
 	if *lineNumbers {
 		printWithLineNumbers(data)
 	} else {
 		printPlainText(data)
 	}
+}
+
+type Line struct {
+	linenumber int
+	content    string
 }
 
 func check(e error) {
@@ -27,25 +38,44 @@ func check(e error) {
 	}
 }
 
-func readafile(path string) []string {
+func readaFile(path string) []Line {
 	file, err := os.Open(path)
 	check(err)
-	var str []string
+	i := 0
+	var str []Line
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		str = append(str, scanner.Text())
+		i++
+		str = append(str, Line{i, scanner.Text()})
 	}
 	file.Close()
 	return str
 }
 
-func printWithLineNumbers(data []string) {
+func onlyShow(data []Line, odd bool) []Line {
+	var output []Line
 	for s := range data {
-		fmt.Println(strconv.Itoa(s+1) + ") " + data[s])
+		if odd {
+			if s%2 != 1 {
+				output = append(output, data[s])
+			}
+		} else {
+			if s%2 == 1 {
+				output = append(output, data[s])
+			}
+		}
+	}
+	return output
+}
+
+func printWithLineNumbers(data []Line) {
+	for s := range data {
+		fmt.Println(strconv.Itoa(data[s].linenumber) + ") " + data[s].content)
 	}
 }
-func printPlainText(data []string) {
+
+func printPlainText(data []Line) {
 	for s := range data {
-		fmt.Println(data[s])
+		fmt.Println(data[s].content)
 	}
 }
