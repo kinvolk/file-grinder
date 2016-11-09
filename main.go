@@ -29,7 +29,7 @@ func readafile(path string) []string {
 
 func main() {
 	pathtofile := flag.String("path", "", "please declare the path of your file.")
-	linenumbers := flag.Bool("linenumbers", false, "Show the linenumbers")
+	linenumbers := flag.Bool("show-line-numbers", false, "Show the linenumbers")
 	flag.Parse()
 	data := readafile(*pathtofile)
 	print(data, *linenumbers)
