@@ -16,10 +16,14 @@ func main() {
 	even := flag.Bool("even", false, "Show even lines only")
 	flag.Parse()
 
-	data := readaFile(*pathToFile)
-	if *odd != *even {
-		data = onlyShow(data, *odd)
+	data := readFile(*pathToFile)
+	if *even&&!*odd{
+		data=getEven(data)
 	}
+	if *odd&&!*even{
+		data=getOdd(data)
+	}
+
 	if *lineNumbers {
 		printWithLineNumbers(data)
 	} else {
@@ -38,7 +42,7 @@ func check(e error) {
 	}
 }
 
-func readaFile(path string) []Line {
+func readFile(path string) []Line {
 	file, err := os.Open(path)
 	check(err)
 	i := 0
@@ -52,17 +56,20 @@ func readaFile(path string) []Line {
 	return str
 }
 
-func onlyShow(data []Line, odd bool) []Line {
+func getEven(data []Line) []Line {
 	var output []Line
 	for s := range data {
-		if odd {
-			if s%2 != 1 {
-				output = append(output, data[s])
-			}
-		} else {
-			if s%2 == 1 {
-				output = append(output, data[s])
-			}
+		if s%2 == 1 {
+			output = append(output, data[s])
+		}
+	}
+	return output
+}
+func getOdd(data []Line) []Line {
+	var output []Line
+	for s := range data {
+		if s%2 != 1 {
+			output = append(output, data[s])
 		}
 	}
 	return output
