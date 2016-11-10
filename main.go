@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"math/rand"
 	"strconv"
 	"strings"
 )
@@ -16,6 +17,7 @@ func main() {
 	odd := flag.Bool("odd", false, "Show odd lines only")
 	even := flag.Bool("even", false, "Show even lines only")
 	info := flag.Bool("info", false, "Show Information about text in file")
+	grind := flag.String("grind", "", "--grind l for print lines in random order")
 	flag.Parse()
 
 	data := readFile(*pathToFile)
@@ -26,6 +28,10 @@ func main() {
 			data = getOdd(data)
 	}
 
+	if *grind=="l"{
+		shuffleLines(data)
+	}
+	
 	if *lineNumbers {
 		printWithLineNumbers(data)
 	} else {
@@ -60,6 +66,13 @@ func readFile(path string) []Line {
 	}
 	file.Close()
 	return str
+}
+
+func shuffleLines(a []Line) {
+    for i := range a {
+        j := rand.Intn(i + 1)
+        a[i], a[j] = a[j], a[i]
+    }
 }
 
 func getEven(data []Line) []Line {
