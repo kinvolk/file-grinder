@@ -59,7 +59,7 @@ func readFile(path string) []Line {
 func getEven(data []Line) []Line {
 	var output []Line
 	for s := range data {
-		if s%2 == 1 {
+		if data[s].linenumber%2 == 0 {
 			output = append(output, data[s])
 		}
 	}
@@ -68,7 +68,7 @@ func getEven(data []Line) []Line {
 func getOdd(data []Line) []Line {
 	var output []Line
 	for s := range data {
-		if s%2 != 1 {
+		if data[s].linenumber%2 == 1 {
 			output = append(output, data[s])
 		}
 	}
