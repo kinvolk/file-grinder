@@ -19,10 +19,10 @@ func main() {
 	odd := flag.Bool("odd", false, "Show odd lines only")
 	even := flag.Bool("even", false, "Show even lines only")
 	info := flag.Bool("info", false, "Show Information about text in file")
-	grind := flag.String("grind", "", "--grind l for print lines in random order")
+	grind := flag.String("grind", "", "--grind l to print lines in random order \n --grind c to print characters in a random order")
 	flag.Parse()
-
 	data := readFile(*pathToFile)
+
 	switch {
 	case *even && !*odd:
 		data = getEven(data)
@@ -30,8 +30,14 @@ func main() {
 		data = getOdd(data)
 	}
 
-	if *grind == "l" {
+	switch  {
+	case *grind == "l" :
 		shuffleLines(data)
+	case *grind == "c":
+		data = randomizeLineContent(data)
+	case *grind =="a":
+		shuffleLines(data)
+		data=randomizeLineContent(data)
 	}
 
 	if *lineNumbers {
@@ -77,6 +83,22 @@ func shuffleLines(a []Line) {
 	}
 }
 
+func randomizeLineContent(data []Line) []Line {
+	for lines := range data {
+
+		var Charactars []string
+		for eachchar := range data[lines].content {
+			Charactars = append(Charactars, data[lines].content[eachchar:eachchar+1])
+		}
+		for eachchar := range Charactars {
+			random := rand.Intn(eachchar + 1)
+			Charactars[random], Charactars[eachchar] = Charactars[eachchar], Charactars[random]
+		}
+		data[lines].content = strings.Join(Charactars[:], "")
+	}
+	return data
+}
+
 func getEven(data []Line) []Line {
 	var output []Line
 	for s := range data {
@@ -86,6 +108,7 @@ func getEven(data []Line) []Line {
 	}
 	return output
 }
+
 func getOdd(data []Line) []Line {
 	var output []Line
 	for s := range data {
@@ -103,6 +126,7 @@ func getTotalCharacters(data []Line) int {
 	}
 	return c
 }
+
 func getTotalWhiteCharacters(data []Line) int {
 	c := 0
 	for _, l := range data {
@@ -111,6 +135,7 @@ func getTotalWhiteCharacters(data []Line) int {
 	}
 	return c
 }
+
 func getSymbolAmount(data []Line) int {
 	s := 0
 	for _, l := range data {
