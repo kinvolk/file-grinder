@@ -5,13 +5,15 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"os"
 	"math/rand"
+	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
 	pathToFile := flag.String("path", "", "Declare the path of your file.")
 	lineNumbers := flag.Bool("show-line-numbers", false, "Show the linenumbers")
 	odd := flag.Bool("odd", false, "Show odd lines only")
@@ -22,13 +24,13 @@ func main() {
 
 	data := readFile(*pathToFile)
 	switch {
-		case *even && !*odd :
-			data = getEven(data)
-		case *odd && !*even :
-			data = getOdd(data)
+	case *even && !*odd:
+		data = getEven(data)
+	case *odd && !*even:
+		data = getOdd(data)
 	}
 
-	if *grind=="l"{
+	if *grind == "l" {
 		shuffleLines(data)
 	}
 
@@ -69,10 +71,10 @@ func readFile(path string) []Line {
 }
 
 func shuffleLines(a []Line) {
-    for i := range a {
-        j := rand.Intn(i + 1)
-        a[i], a[j] = a[j], a[i]
-    }
+	for i := range a {
+		j := rand.Intn(i + 1)
+		a[i], a[j] = a[j], a[i]
+	}
 }
 
 func getEven(data []Line) []Line {
@@ -94,10 +96,10 @@ func getOdd(data []Line) []Line {
 	return output
 }
 
-func getTotalCharacters(data []Line) int{
+func getTotalCharacters(data []Line) int {
 	c := 0
 	for _, l := range data {
-		c += strings.Count(l.content, "")-1
+		c += strings.Count(l.content, "") - 1
 	}
 	return c
 }
@@ -113,8 +115,8 @@ func getSymbolAmount(data []Line) int {
 	s := 0
 	for _, l := range data {
 		for _, c := range l.content {
-			if !(c == 32 || c == 9 || (c >= 48 && c <= 57) ||	//spaces, tabs, numbers
-				(c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {//a-z, A-Z
+			if !(c == 32 || c == 9 || (c >= 48 && c <= 57) || //spaces, tabs, numbers
+				(c >= 65 && c <= 90) || (c >= 97 && c <= 122)) { //a-z, A-Z
 				s++
 			}
 		}
