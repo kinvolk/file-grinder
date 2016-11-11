@@ -19,7 +19,9 @@ func main() {
 	odd := flag.Bool("odd", false, "Show odd lines only")
 	even := flag.Bool("even", false, "Show even lines only")
 	info := flag.Bool("info", false, "Show Information about text in file")
-	grind := flag.String("grind", "", "--grind l to print lines in random order \n --grind c to print characters in a random order")
+	grind := flag.String("grind", "", "--grind l to print lines in random order \n"+
+		"\t --grind c to print characters in a random order \n"+
+		"\t --grind a to randomize both")
 	flag.Parse()
 	data := readFile(*pathToFile)
 
@@ -30,14 +32,14 @@ func main() {
 		data = getOdd(data)
 	}
 
-	switch  {
-	case *grind == "l" :
+	switch {
+	case *grind == "l":
 		shuffleLines(data)
 	case *grind == "c":
 		data = randomizeLineContent(data)
-	case *grind =="a":
+	case *grind == "a":
 		shuffleLines(data)
-		data=randomizeLineContent(data)
+		data = randomizeLineContent(data)
 	}
 
 	if *lineNumbers {
