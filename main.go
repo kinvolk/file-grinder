@@ -30,12 +30,16 @@ func main() {
 		data = getOdd(data)
 	}
 
-	if *grind == "l" {
+	switch  {
+	case *grind == "l" :
 		shuffleLines(data)
-	}
-	if *grind == "c" {
+	case *grind == "c":
 		data = randomizeLineContent(data)
+	case *grind =="a":
+		shuffleLines(data)
+		data=randomizeLineContent(data)
 	}
+
 	if *lineNumbers {
 		printWithLineNumbers(data)
 	} else {
