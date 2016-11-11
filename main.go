@@ -31,7 +31,7 @@ func main() {
 	if *grind=="l"{
 		shuffleLines(data)
 	}
-	
+
 	if *lineNumbers {
 		printWithLineNumbers(data)
 	} else {
